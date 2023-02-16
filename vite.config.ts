@@ -18,7 +18,7 @@ const alias: Record<string, string> = {
 const { dependencies, devDependencies, name, version } = pkg
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
 }
 
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
