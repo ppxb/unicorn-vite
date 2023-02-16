@@ -1,45 +1,40 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "Node",
-    "strict": true,
-    "noLib": false,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "strictFunctionTypes": false,
+    "strict": false,
     "jsx": "preserve",
-    "baseUrl": ".",
-    "allowJs": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "importHelpers": true,
     "experimentalDecorators": true,
-    "lib": ["ESNext", "DOM"],
-    "noImplicitAny": false,
+    "strictFunctionTypes": false,
     "skipLibCheck": true,
-    "types": ["vite/client"],
-    "removeComments": true,
-    "paths": {
-      "/@/*": ["src/*"],
-      "/#/*": ["types/*"]
-    },
-    "useDefineForClassFields": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "noEmit": true
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "lib": ["dom", "esnext"],
+    "incremental": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@build/*": ["build/*"]
+    },
+    "types": [
+      "node",
+      "vite/client"
+    ],
+    "typeRoots": ["./types"]
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "types/**/*.d.ts",
-    "types/**/*.ts",
-    "build/**/*.ts",
-    "build/**/*.d.ts",
+    "types/*.d.ts",
     "vite.config.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "**/*.js"]
 }

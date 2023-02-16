@@ -1,48 +1,50 @@
-import { UserConfig, ConfigEnv, loadEnv } from 'vite'
-import { resolve } from 'path'
-import pkg from './package.json'
+import { ConfigEnv, loadEnv, UserConfigExport } from 'vite'
 import dayjs from 'dayjs'
-import { createVitePlugins } from './build/vite/plugin'
-import { wrapperEnv } from './build/utils'
+import { resolve } from 'path'
+import { wrapperEnv } from './build'
+import { createProxy } from './build/proxy'
+import { createPlugins } from './build/plugin'
+import pkg from './package.json'
 
 const pathResolve = (dir: string) => resolve(process.cwd(), '.', dir)
+
+const root: string = process.cwd()
+
+const alias: Record<string, string> = {
+  '@': pathResolve('src'),
+  '@build': pathResolve('build')
+}
 
 const { dependencies, devDependencies, name, version } = pkg
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
+  lastBuildTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export default ({ command, mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd()
-  const env = loadEnv(mode, root)
-  const viteEnv = wrapperEnv(env)
-
-  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv
-  const isBuild = command === 'build'
+export default ({ command, mode }: ConfigEnv): UserConfigExport => {
+  const {
+    VITE_PORT,
+    VITE_PUBLIC_PATH,
+    VITE_COMPRESSION,
+    VITE_CDN,
+    VITE_PROXY
+  } = wrapperEnv(loadEnv(mode, root))
 
   return {
     base: VITE_PUBLIC_PATH,
     root,
     resolve: {
-      alias: [
-        {
-          find: /\/@\//,
-          replacement: pathResolve('src') + '/'
-        },
-        {
-          find: /\/#\//,
-          replacement: pathResolve('types') + '/'
-        }
-      ]
+      alias
     },
+    plugins: createPlugins(command, VITE_CDN, VITE_COMPRESSION),
     server: {
       https: false,
       host: true,
-      port: VITE_PORT
+      port: VITE_PORT,
+      proxy: createProxy(VITE_PROXY)
     },
     esbuild: {
-      drop: VITE_DROP_CONSOLE ? ['console', 'debugger'] : []
+      drop: ['console', 'debugger']
     },
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__)
@@ -53,7 +55,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           javascriptEnabled: true
         }
       }
-    },
-    plugins: createVitePlugins(viteEnv, isBuild)
+    }
   }
 }

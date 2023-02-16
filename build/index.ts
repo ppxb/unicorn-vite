@@ -11,12 +11,12 @@ export const wrapperEnv = (envConf: Recordable): ViteEnv => {
     }
     if (envName === 'VITE_PROXY' && realName) {
       try {
-        realName = JSON.parse(realName.replace(/'/g, ''))
+        realName = JSON.parse(realName.replace(/'/g, '"'))
       } catch (error) {
         realName = ''
       }
     }
-    ret[realName] = realName
+    ret[envName] = realName
   }
   return ret
 }
