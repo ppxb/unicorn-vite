@@ -1,16 +1,21 @@
 <script lang='ts' setup>
-  import type { FormItemInstance } from 'element-plus'
+  import type { FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
   const loading = ref(false)
-  const ruleFormRef = ref<FormItemInstance>()
+  const ruleFormRef = ref<FormInstance>()
 
   const ruleForm = reactive({
     mobile: '181',
     password: '123465'
   })
+
+  const handleLogin = async (formEl: FormInstance | undefined) => {
+    loading.value = true
+
+  }
 </script>
 
 <template>
@@ -26,12 +31,12 @@
                     trigger: 'blur'
                   }
                 ]">
-            <el-input clearable v-model='ruleForm.mobile' placeholder='手机号码' />
+            <el-input v-model='ruleForm.mobile' clearable placeholder='手机号码' />
           </el-form-item>
           <el-form-item>
-            <el-input clearable show-password v-model='ruleForm.password' placeholder='密码' />
+            <el-input v-model='ruleForm.password' clearable placeholder='密码' show-password />
           </el-form-item>
-          <el-button class='w-full' type='primary' :loading='loading'>
+          <el-button :loading='loading' class='w-full' type='primary' @click='handleLogin(ruleFormRef)'>
             登录
           </el-button>
         </el-form>

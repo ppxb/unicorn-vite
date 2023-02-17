@@ -28,6 +28,7 @@ declare global {
     VITE_CDN: boolean
     VITE_PROXY: [string, string][]
     VITE_COMPRESSION: ViteCompression
+    VITE_BASE_URL: string
   }
 
   interface AppRouteRecordRaw {
@@ -72,5 +73,17 @@ declare global {
       dynamicLevel?: number
     }
     children?: AppRouteChildRecordRaw[]
+  }
+
+  interface LocalStorageData {
+    value: unknown
+    expire: number | null
+  }
+
+  interface Result<T = unknown> {
+    code: number
+    msg: string
+    data: T
+    timestamp: number
   }
 }
