@@ -13,5 +13,5 @@
 </script>
 
 <template>
-  <div> home </div>
+  <router-view />
 </template>

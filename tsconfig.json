@@ -23,11 +23,8 @@
       "@/*": ["src/*"],
       "@build/*": ["build/*"]
     },
-    "types": [
-      "node",
-      "vite/client"
-    ],
-    "typeRoots": ["./types"]
+    "types": ["node", "vite/client"],
+    "typeRoots": ["./node_modules/@types/", "./types"]
   },
   "include": [
     "src/**/*.ts",
